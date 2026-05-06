@@ -1,0 +1,5 @@
+mysql-connector-python
+pydantic-settings
+fastapi[standard]
+pytest
+httpx

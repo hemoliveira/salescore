@@ -1,0 +1,42 @@
+# Ambientes Virtuais
+venv/
+.venv/
+env/
+
+# Configurações Sensíveis (CRÍTICO)
+.env
+
+# Logs
+logs/
+*.log
+
+# Python Temporários
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Testes e Cobertura
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Build / Distribuição
+dist/
+build/
+*.egg-info/
+
+# Type checkers e linters
+.mypy_cache/
+.ruff_cache/
+
+# IDEs
+.vscode/
+.idea/
+
+# Sistema Operacional
+.DS_Store
+Thumbs.db
+
+# Banco de Dados (dumps locais)
+*.sql.gz
+*.sql.bak

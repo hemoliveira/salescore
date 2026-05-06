@@ -1,0 +1,19 @@
+# Ambiente Virtual (criado na raiz)
+.venv/
+venv/
+env/
+
+# Sistema Operacional
+.DS_Store
+Thumbs.db
+
+# IDEs
+.vscode/
+.idea/
+
+# VS Code Workspace (opcional — remova o ! se não quiser subir)
+# *.code-workspace
+
+# Logs da raiz
+logs/
+*.log
