@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { apiDelete, apiGet, apiPost } from "../api/client";
+import { apiDelete, apiGet, apiPost, apiPut } from "../api/client";
 
 export default function Products() {
     const [products, setProducts] = useState([]);
@@ -12,6 +12,7 @@ export default function Products() {
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState("");
     const [messageType, setMessageType] = useState("");
+    const [editingId, setEditingId] = useState(null);
 
     function showMessage(text, type = "success") {
         setMessage(text);
@@ -46,19 +47,26 @@ export default function Products() {
         try {
             setError("");
 
-            await apiPost("/products", {
+            const payload = {
                 name: form.name,
-                category: form.category,
+                category: form.category || null,
                 price: Number(form.price),
-            });
+            };
 
+            if (editingId) {
+                await apiPut(`/products/${editingId}`, payload);
+                showMessage("Product updated successfully");
+            } else {
+                await apiPost("/products", payload);
+                showMessage("Product created successfully");
+            }
+
+            setEditingId(null);
             setForm({
                 name: "",
                 category: "",
                 price: "",
             });
-
-            showMessage("Product created successfully");
 
             await loadProducts();
         } catch (err) {
@@ -75,6 +83,20 @@ export default function Products() {
         } catch (err) {
             showMessage(err.message, "error");
         }
+    }
+
+    function handleEdit(product) {
+        setEditingId(product.product_id);
+        setForm({
+            name: product.name,
+            category: product.category || "",
+            price: product.price,
+        });
+    }
+
+    function handleCancelEdit() {
+        setEditingId(null);
+        setForm({ name: "", category: "", price: "" });
     }
 
     return (
@@ -110,7 +132,19 @@ export default function Products() {
                     onChange={(e) => setForm({ ...form, price: e.target.value })}
                 />
 
-                <button type="submit">Create Product</button>
+                <button type="submit">
+                    {editingId ? "Update Product" : "Create Product"}
+                </button>
+
+                {editingId && (
+                    <button
+                        type="button"
+                        className="secondary-button"
+                        onClick={handleCancelEdit}
+                    >
+                        Cancel
+                    </button>
+                )}
             </form>
 
             {loading && <p className="loading-text">Loading products...</p>}
@@ -131,11 +165,25 @@ export default function Products() {
                             <td>{product.product_id}</td>
                             <td>{product.name}</td>
                             <td>{product.category || "-"}</td>
-                            <td>{product.price}</td>
                             <td>
-                                <button onClick={() => handleDelete(product.product_id)}>
-                                    Delete
-                                </button>
+                                {Number(product.price).toLocaleString("en-US", {
+                                    style: "currency",
+                                    currency: "USD",
+                                })}
+                            </td>
+                            <td>
+                                <div className="action-buttons">
+                                    <button onClick={() => handleEdit(product)}>
+                                        Edit
+                                    </button>
+                                    &nbsp;
+                                    <button
+                                        className="danger-button"
+                                        onClick={() => handleDelete(product.product_id)}
+                                    >
+                                        Delete
+                                    </button>
+                                </div>
                             </td>
                         </tr>
                     ))}

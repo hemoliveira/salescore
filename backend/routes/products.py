@@ -36,7 +36,7 @@ def create_product(payload: ProductCreate):
         product = Product(
             name=payload.name,
             category=payload.category,
-            price=Decimal(payload.price),
+            price=payload.price,
         )
 
         new_id = repo.create(product)
@@ -62,7 +62,7 @@ def update_product(product_id: int, payload: ProductUpdate):
             product_id=product_id,
             name=payload.name,
             category=payload.category,
-            price=Decimal(payload.price),
+            price=payload.price,
         )
 
         updated = repo.update(product)

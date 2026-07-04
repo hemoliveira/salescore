@@ -14,6 +14,7 @@ class ProductRepository:
         query = f"""
             INSERT INTO {self.TABLE} (name, category, price)
             VALUES (%s, %s, %s)
+            RETURNING product_id
         """
 
         new_id = DatabaseManager.execute_insert(

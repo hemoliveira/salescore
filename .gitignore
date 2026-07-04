@@ -10,10 +10,48 @@ Thumbs.db
 # IDEs
 .vscode/
 .idea/
-
-# VS Code Workspace (opcional — remova o ! se não quiser subir)
-# *.code-workspace
+# *.code-workspace   # Uncomment if you want to ignore VS Code workspace files
 
 # Logs da raiz
 logs/
 *.log
+
+# Python artifacts
+__pycache__/
+*.py[cod]
+*.pyd
+*.so
+*.egg-info/
+*.egg
+*.coverage
+htmlcov/
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+
+# Variáveis de ambiente (CRÍTICO)
+.env
+.env.*
+!.env.example
+
+# Database files
+*.sqlite3
+*.sqlite
+*.db
+
+# SQL — pasta de migrations/scripts versionada intencionalmente.
+# Se contiver dumps locais, adicione: sql/*.dump ou sql/*.sql.gz
+# sql/
+
+# Node / Front‑end artefacts (if applicable)
+node_modules/
+dist/
+build/
+
+# Miscellaneous editor/OS files
+*.bak
+*.sublime-project
+*.sublime-workspace
+*.iml
+.vercel
+.env*

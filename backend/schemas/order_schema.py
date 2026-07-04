@@ -24,8 +24,14 @@ class OrderCreate(BaseModel):
     items: List[OrderItemCreate] = Field(..., min_length=1)
 
 
+class OrderUpdate(BaseModel):
+    customer_id: int = Field(..., gt=0)
+    order_date: date
+
+
 class OrderResponse(BaseModel):
     order_id: int
     customer_id: int
     order_date: date
     items: List[OrderItemResponse]
+

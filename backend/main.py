@@ -10,6 +10,8 @@ from routes.customers import router as customers_router
 from routes.health import router as health_router
 from routes.orders import router as orders_router
 from routes.products import router as products_router
+from routes.dashboard import router as dashboard_router
+
 
 logger = Logger.get_logger(__name__)
 
@@ -19,6 +21,8 @@ async def lifespan(app: FastAPI):
     """
     Handles application startup and shutdown.
     """
+    logger.info("Starting application...")
+
     try:
         logger.info("Initializing application infrastructure...")
         DatabaseManager.init_pool(pool_size=10)
@@ -54,6 +58,8 @@ app.include_router(health_router)
 app.include_router(customers_router)
 app.include_router(products_router)
 app.include_router(orders_router)
+app.include_router(dashboard_router)
+
 
 if __name__ == "__main__":
     import uvicorn

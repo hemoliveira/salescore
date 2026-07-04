@@ -42,9 +42,12 @@ class OrderRepository:
             sql_order = f"""
                 INSERT INTO {self.TABLE} (customer_id, order_date)
                 VALUES (%s, %s)
+                RETURNING order_id
             """
             cursor.execute(sql_order, (order.customer_id, order.order_date))
-            order_id = cursor.lastrowid
+            row = cursor.fetchone()
+            order_id = row["order_id"]
+
 
             sql_product = """
                 SELECT price
@@ -358,6 +361,7 @@ class OrderRepository:
                     total
                 )
                 VALUES (%s, %s, %s, %s, %s)
+                RETURNING item_id
                 """,
                 (
                     order_id,
@@ -368,7 +372,8 @@ class OrderRepository:
                 ),
             )
 
-            item_id = int(cursor.lastrowid or 0)
+            row = cursor.fetchone()
+            item_id = int(row["item_id"] if row else 0)
 
             cursor.execute(
                 """

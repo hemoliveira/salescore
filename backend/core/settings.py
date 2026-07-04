@@ -8,11 +8,7 @@ BASE_DIR = Path(__file__).resolve().parents[1]
 
 
 class Settings(BaseSettings):
-    db_host: str = Field(..., min_length=1)
-    db_user: str = Field(..., min_length=1)
-    db_pass: SecretStr = Field(...)
-    db_name: str = Field(..., min_length=1)
-    db_port: int = Field(default=3306, ge=1, le=65535)
+    database_url: SecretStr = Field(..., min_length=1)
 
     model_config = SettingsConfigDict(
         env_file=BASE_DIR / ".env",
@@ -20,21 +16,11 @@ class Settings(BaseSettings):
         extra="ignore",
     )
 
-    @field_validator("db_host", "db_user", "db_name")
+    @field_validator("database_url")
     @classmethod
-    def not_empty(cls, value: str) -> str:
-        value = value.strip()
-
-        if not value:
-            raise ValueError("Field cannot be empty or whitespace")
-
-        return value
-
-    @field_validator("db_pass")
-    @classmethod
-    def password_not_empty(cls, value: SecretStr) -> SecretStr:
+    def url_not_empty(cls, value: SecretStr) -> SecretStr:
         if not value.get_secret_value().strip():
-            raise ValueError("Field cannot be empty or whitespace")
+            raise ValueError("database_url cannot be empty or whitespace")
         return value
 
 

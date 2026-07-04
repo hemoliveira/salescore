@@ -14,6 +14,7 @@ class CustomerRepository:
         query = f"""
             INSERT INTO {self.TABLE} (name, city)
             VALUES (%s, %s)
+            RETURNING customer_id
         """
 
         new_id = DatabaseManager.execute_insert(

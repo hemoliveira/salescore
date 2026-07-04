@@ -1,3 +1,5 @@
+-- Postgres compatible queries script for Neon
+
 -- 1. Total spent by each customer
 SELECT
     customer_name,
@@ -26,9 +28,9 @@ ORDER BY total_qty DESC, p.name ASC;
 
 -- 3. Monthly sales totals (numeric for charts)
 SELECT
-    DATE_FORMAT(o.order_date, '%Y-%m') AS sales_month,
-    YEAR(o.order_date) AS year_num,
-    MONTH(o.order_date) AS month_num,
+    to_char(o.order_date, 'YYYY-MM') AS sales_month,
+    EXTRACT(YEAR FROM o.order_date) AS year_num,
+    EXTRACT(MONTH FROM o.order_date) AS month_num,
     SUM(oi.total) AS total_raw
 FROM tb_orders o
 JOIN tb_order_items oi
@@ -36,14 +38,14 @@ JOIN tb_order_items oi
 WHERE o.deleted_at IS NULL
   AND oi.deleted_at IS NULL
 GROUP BY
-    DATE_FORMAT(o.order_date, '%Y-%m'),
-    YEAR(o.order_date),
-    MONTH(o.order_date)
+    to_char(o.order_date, 'YYYY-MM'),
+    EXTRACT(YEAR FROM o.order_date),
+    EXTRACT(MONTH FROM o.order_date)
 ORDER BY sales_month;
 
 -- 4. Monthly sales totals (formatted for reports)
 SELECT
-    DATE_FORMAT(o.order_date, '%M %Y') AS month_label,
+    to_char(o.order_date, 'Month YYYY') AS month_label,
     fn_format_currency(SUM(oi.total)) AS total_formatted
 FROM tb_orders o
 JOIN tb_order_items oi
@@ -51,9 +53,9 @@ JOIN tb_order_items oi
 WHERE o.deleted_at IS NULL
   AND oi.deleted_at IS NULL
 GROUP BY
-    DATE_FORMAT(o.order_date, '%Y-%m'),
-    DATE_FORMAT(o.order_date, '%M %Y')
-ORDER BY DATE_FORMAT(o.order_date, '%Y-%m');
+    to_char(o.order_date, 'YYYY-MM'),
+    to_char(o.order_date, 'Month YYYY')
+ORDER BY to_char(o.order_date, 'YYYY-MM');
 
 -- 5. Total sales by product category
 SELECT

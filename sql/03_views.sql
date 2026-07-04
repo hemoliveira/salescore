@@ -1,3 +1,5 @@
+-- Postgres compatible views script for Neon
+
 -- 1. Sales Report View
 CREATE OR REPLACE VIEW vw_sales_report AS
 SELECT
@@ -25,7 +27,7 @@ SELECT
     fn_format_currency(SUM(oi.total)) AS total_value_formatted
 FROM tb_customers c
 JOIN tb_orders o ON o.customer_id = c.customer_id
-JOIN tb_order_items oi ON oi.order_id = o.order_id
+JOIN tb_order_items oi ON oi.order_id = o.order_id AND oi.deleted_at IS NULL
 WHERE o.deleted_at IS NULL 
   AND c.deleted_at IS NULL
 GROUP BY c.customer_id, c.name;
@@ -58,7 +60,7 @@ WHERE p.deleted_at IS NULL
   AND oi.deleted_at IS NULL
   AND o.deleted_at IS NULL
 GROUP BY p.product_id, p.name, p.category
-HAVING total_units_sold < 5
+HAVING SUM(COALESCE(oi.quantity, 0)) < 5
 ORDER BY total_units_sold ASC;
 
 -- 5. Audit Report View
@@ -69,10 +71,9 @@ SELECT
     a.action_name,
     a.record_id,
     a.user_context,
-    fn_format_date(DATE(a.created_at)) AS action_date,
-    DATE_FORMAT(a.created_at, '%H:%i:%s') AS action_time
-FROM tb_audit_log a
-ORDER BY a.created_at DESC;
+    fn_format_date(CAST(a.created_at AS DATE)) AS action_date,
+    to_char(a.created_at, 'HH24:MI:SS') AS action_time
+FROM tb_audit_log a;
 
 -- 6. Active Customers View
 CREATE OR REPLACE VIEW vw_active_customers AS
@@ -83,4 +84,16 @@ SELECT
     created_at,
     updated_at
 FROM tb_customers
+WHERE deleted_at IS NULL;
+
+-- 7. Active Products View
+CREATE OR REPLACE VIEW vw_active_products AS
+SELECT
+    product_id,
+    name,
+    category,
+    price,
+    created_at,
+    updated_at
+FROM tb_products
 WHERE deleted_at IS NULL;

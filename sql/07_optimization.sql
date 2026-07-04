@@ -1,4 +1,4 @@
-USE company_sales_db;
+-- Postgres compatible optimization script for Neon
 
 -- Less efficient / legacy style query (old implicit join syntax)
 SELECT

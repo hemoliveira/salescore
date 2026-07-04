@@ -1,16 +1,9 @@
-USE company_sales_db;
+-- Postgres compatible seed data script for Neon
 
--- Start with clean data (recommended for seed scripts)
-SET FOREIGN_KEY_CHECKS = 0;
+-- Clean data using CASCADE to handle foreign key dependencies
+TRUNCATE TABLE tb_audit_log, tb_order_items, tb_orders, tb_products, tb_customers CASCADE;
 
-TRUNCATE TABLE tb_audit_log;
-TRUNCATE TABLE tb_order_items;
-TRUNCATE TABLE tb_orders;
-TRUNCATE TABLE tb_products;
-TRUNCATE TABLE tb_customers;
-
-SET FOREIGN_KEY_CHECKS = 1;
-
+-- Insert seed data
 INSERT INTO tb_customers (name, city, created_at) VALUES
 ('Anne Silver','NY','2025-01-01'),
 ('Charles South','LA','2025-01-02'),
