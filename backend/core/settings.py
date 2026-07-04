@@ -19,9 +19,10 @@ class Settings(BaseSettings):
     @field_validator("database_url")
     @classmethod
     def url_not_empty(cls, value: SecretStr) -> SecretStr:
-        if not value.get_secret_value().strip():
+        stripped = value.get_secret_value().strip()
+        if not stripped:
             raise ValueError("database_url cannot be empty or whitespace")
-        return value
+        return SecretStr(stripped)
 
 
 @lru_cache

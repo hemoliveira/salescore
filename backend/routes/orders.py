@@ -113,8 +113,6 @@ def add_item_to_order(order_id: int, payload: OrderItemCreate):
         }
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
-    except Exception as e:
-        raise HTTPException(status_code=500, detail=str(e))
 
 
 @router.delete("/{order_id}/items/{item_id}")

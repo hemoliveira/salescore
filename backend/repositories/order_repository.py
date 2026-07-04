@@ -24,8 +24,7 @@ class OrderRepository:
 
         try:
             conn = DatabaseManager.get_connection()
-            conn.start_transaction()
-            cursor = conn.cursor(dictionary=True)
+            cursor = conn.cursor()
 
             sql_customer = """
                 SELECT 1
@@ -112,7 +111,7 @@ class OrderRepository:
             if cursor:
                 cursor.close()
             if conn:
-                conn.close()
+                DatabaseManager.release_connection(conn)
 
     def find_all(self) -> list[Order]:
         """
@@ -191,7 +190,6 @@ class OrderRepository:
 
         try:
             conn = DatabaseManager.get_connection()
-            conn.start_transaction()
             cursor = conn.cursor()
 
             sql_items = """
@@ -226,7 +224,7 @@ class OrderRepository:
             if cursor:
                 cursor.close()
             if conn:
-                conn.close()
+                DatabaseManager.release_connection(conn)
 
     @staticmethod
     def _map_orders_with_items(rows: list[dict[str, Any]]) -> list[Order]:
@@ -317,8 +315,7 @@ class OrderRepository:
 
         try:
             conn = DatabaseManager.get_connection()
-            conn.start_transaction()
-            cursor = conn.cursor(dictionary=True)
+            cursor = conn.cursor()
 
             cursor.execute(
                 """
@@ -403,7 +400,7 @@ class OrderRepository:
             if cursor:
                 cursor.close()
             if conn:
-                conn.close()
+                DatabaseManager.release_connection(conn)
 
     def remove_item(self, order_id: int, item_id: int) -> bool:
         """
@@ -417,7 +414,6 @@ class OrderRepository:
 
         try:
             conn = DatabaseManager.get_connection()
-            conn.start_transaction()
             cursor = conn.cursor()
 
             cursor.execute(
@@ -459,4 +455,4 @@ class OrderRepository:
             if cursor:
                 cursor.close()
             if conn:
-                conn.close()
+                DatabaseManager.release_connection(conn)

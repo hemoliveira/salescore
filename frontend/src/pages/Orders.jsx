@@ -49,6 +49,11 @@ export default function Orders() {
         }
     }
 
+    async function refreshOrders() {
+        const ordersData = await apiGet("/orders");
+        setOrders(ordersData);
+    }
+
     useEffect(() => {
         loadData();
     }, []);
@@ -131,7 +136,7 @@ export default function Orders() {
         try {
             await apiDelete(`/orders/${orderId}/items/${itemId}`);
             showMessage("Item removed from order");
-            await loadData();
+            await refreshOrders();
         } catch (err) {
             showMessage(err.message, "error");
         }
@@ -148,7 +153,7 @@ export default function Orders() {
             });
             setNewItem({ product_id: "", quantity: 1 });
             showMessage("Item added to order");
-            await loadData();
+            await refreshOrders();
         } catch (err) {
             showMessage(err.message, "error");
         }

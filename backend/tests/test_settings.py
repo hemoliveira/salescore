@@ -27,3 +27,11 @@ def test_database_url_cannot_be_empty():
         Settings(
             database_url=SecretStr("   "),
         )
+
+
+def test_database_url_is_stripped():
+    settings = Settings(
+        database_url=SecretStr("  postgres://user:pass@host/dbname?sslmode=require  \n"),
+    )
+
+    assert settings.database_url.get_secret_value() == "postgres://user:pass@host/dbname?sslmode=require"

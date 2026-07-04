@@ -44,6 +44,5 @@ class DashboardRepository:
         finally:
             if cursor:
                 cursor.close()
-            # Connection from pool must be returned
-            DatabaseManager._pool.putconn(conn)
+            DatabaseManager.release_connection(conn)
 

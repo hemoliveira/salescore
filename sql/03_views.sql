@@ -73,7 +73,8 @@ SELECT
     a.user_context,
     fn_format_date(CAST(a.created_at AS DATE)) AS action_date,
     to_char(a.created_at, 'HH24:MI:SS') AS action_time
-FROM tb_audit_log a;
+FROM tb_audit_log a
+ORDER BY a.created_at DESC;
 
 -- 6. Active Customers View
 CREATE OR REPLACE VIEW vw_active_customers AS

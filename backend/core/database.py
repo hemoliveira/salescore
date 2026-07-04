@@ -35,7 +35,7 @@ class DatabaseManager:
                 min_size=2,
                 max_size=pool_size,
                 open=True,
-                kwargs={"row_factory": dict_row}
+                kwargs={"row_factory": dict_row, "connect_timeout": 10}
             )
             logger.info("PostgreSQL connection pool initialized.")
         except Exception as e:
@@ -58,6 +58,14 @@ class DatabaseManager:
         except Exception as e:
             logger.exception("Could not get connection from pool")
             raise RuntimeError("Database connection error") from e
+
+    @classmethod
+    def release_connection(cls, connection: psycopg.Connection) -> None:
+        """
+        Returns a connection obtained via get_connection() back to the pool.
+        """
+        if cls._pool is not None:
+            cls._pool.putconn(connection)
 
     @classmethod
     def close_pool(cls) -> None:

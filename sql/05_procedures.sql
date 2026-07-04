@@ -61,8 +61,8 @@ BEGIN
         JOIN tb_order_items oi ON oi.order_id = o.order_id
         WHERE o.deleted_at IS NULL
           AND oi.deleted_at IS NULL
-          AND EXTRACT(MONTH FROM o.order_date) = EXTRACT(MONTH FROM CURRENT_DATE)
-          AND EXTRACT(YEAR FROM o.order_date) = EXTRACT(YEAR FROM CURRENT_DATE);
+          AND o.order_date >= date_trunc('month', CURRENT_DATE)
+          AND o.order_date < date_trunc('month', CURRENT_DATE) + INTERVAL '1 month';
 
     OPEN categories FOR
         SELECT
@@ -74,8 +74,8 @@ BEGIN
         WHERE o.deleted_at IS NULL
           AND oi.deleted_at IS NULL
           AND p.deleted_at IS NULL
-          AND EXTRACT(MONTH FROM o.order_date) = EXTRACT(MONTH FROM CURRENT_DATE)
-          AND EXTRACT(YEAR FROM o.order_date) = EXTRACT(YEAR FROM CURRENT_DATE)
+          AND o.order_date >= date_trunc('month', CURRENT_DATE)
+          AND o.order_date < date_trunc('month', CURRENT_DATE) + INTERVAL '1 month'
         GROUP BY p.category
         ORDER BY SUM(oi.total) DESC;
 
@@ -89,8 +89,8 @@ BEGIN
         WHERE c.deleted_at IS NULL
           AND o.deleted_at IS NULL
           AND oi.deleted_at IS NULL
-          AND EXTRACT(MONTH FROM o.order_date) = EXTRACT(MONTH FROM CURRENT_DATE)
-          AND EXTRACT(YEAR FROM o.order_date) = EXTRACT(YEAR FROM CURRENT_DATE)
+          AND o.order_date >= date_trunc('month', CURRENT_DATE)
+          AND o.order_date < date_trunc('month', CURRENT_DATE) + INTERVAL '1 month'
         GROUP BY c.customer_id, c.name
         ORDER BY SUM(oi.total) DESC
         LIMIT 1;
