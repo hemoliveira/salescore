@@ -1,4 +1,4 @@
-psycopg[binary]
+psycopg[binary,pool]
 pydantic-settings
 fastapi[standard]
 pytest
