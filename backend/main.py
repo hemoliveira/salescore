@@ -1,9 +1,7 @@
-import traceback
 from contextlib import asynccontextmanager
 
-from fastapi import FastAPI, Request
+from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import JSONResponse
 
 from core.database import DatabaseManager
 from core.logger import Logger
@@ -55,19 +53,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-@app.exception_handler(Exception)
-async def _debug_exception_handler(request: Request, exc: Exception):
-    # TEMPORARY: surfaces the real traceback in the response for prod debugging.
-    return JSONResponse(
-        status_code=500,
-        content={
-            "error_type": type(exc).__name__,
-            "error": str(exc),
-            "traceback": traceback.format_exc(),
-        },
-    )
-
 
 app.include_router(health_router, prefix="/api")
 app.include_router(customers_router, prefix="/api")
