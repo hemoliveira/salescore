@@ -53,5 +53,9 @@ build/
 *.sublime-project
 *.sublime-workspace
 *.iml
-.vercel
-.env*
+.vercel/
+
+# Ferramentas de IA / Assistentes
+.claude/
+.agents/
+.gemini/

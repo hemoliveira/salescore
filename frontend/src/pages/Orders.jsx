@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { apiDelete, apiGet, apiPost, apiPut } from "../api/client";
 
 export default function Orders() {
@@ -177,12 +177,24 @@ export default function Orders() {
         });
     }
 
-    const customerMap = Object.fromEntries(
-        customers.map((customer) => [customer.customer_id, customer.name])
+    const customerMap = useMemo(
+        () => Object.fromEntries(customers.map((customer) => [customer.customer_id, customer.name])),
+        [customers]
     );
 
-    const productMap = Object.fromEntries(
-        products.map((product) => [product.product_id, product.name])
+    const productMap = useMemo(
+        () => Object.fromEntries(products.map((product) => [product.product_id, product.name])),
+        [products]
+    );
+
+    const ordersWithTotals = useMemo(
+        () =>
+            orders.map((order) => ({
+                ...order,
+                totalItems: order.items.reduce((sum, item) => sum + Number(item.quantity), 0),
+                orderTotal: order.items.reduce((sum, item) => sum + Number(item.total), 0),
+            })),
+        [orders]
     );
 
     return (
@@ -354,16 +366,8 @@ export default function Orders() {
                     </tr>
                 </thead>
                 <tbody>
-                    {orders.map((order) => {
-                        const totalItems = order.items.reduce(
-                            (sum, item) => sum + Number(item.quantity),
-                            0
-                        );
-
-                        const orderTotal = order.items.reduce(
-                            (sum, item) => sum + Number(item.total),
-                            0
-                        );
+                    {ordersWithTotals.map((order) => {
+                        const { totalItems, orderTotal } = order;
 
                         return (
                             <tr key={order.order_id}>

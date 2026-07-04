@@ -57,7 +57,7 @@ body {
 .container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 40px 24px;
+    padding: 24px 20px;
     animation: fadeIn 0.4s ease-out;
 }
 
@@ -75,7 +75,7 @@ body {
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     color: white;
-    padding: 18px 40px;
+    padding: 12px 32px;
     position: sticky;
     top: 0;
     z-index: 100;
@@ -84,7 +84,7 @@ body {
 }
 
 .navbar h1 {
-    font-size: 24px;
+    font-size: 20px;
     font-weight: 700;
     letter-spacing: -0.5px;
     background: linear-gradient(to right, #ffffff, #a5b4fc);
@@ -102,7 +102,7 @@ body {
     text-decoration: none;
     font-weight: 500;
     font-size: 14px;
-    padding: 8px 16px;
+    padding: 6px 14px;
     border-radius: var(--border-radius-sm);
     transition: var(--transition-normal);
     border: 1px solid transparent;
@@ -122,9 +122,9 @@ body {
 
 /* Page Headers */
 .page h2 {
-    font-size: 28px;
+    font-size: 22px;
     font-weight: 700;
-    margin-bottom: 24px;
+    margin-bottom: 16px;
     color: var(--color-text);
     letter-spacing: -0.5px;
 }
@@ -132,13 +132,13 @@ body {
 /* Beautiful Form Cards */
 .form-card {
     display: flex;
-    gap: 16px;
+    gap: 12px;
     flex-wrap: wrap;
     align-items: center;
     background: var(--bg-secondary);
-    padding: 24px;
+    padding: 16px;
     border-radius: var(--border-radius-md);
-    margin-bottom: 32px;
+    margin-bottom: 20px;
     box-shadow: var(--shadow-md);
     border: 1px solid rgba(226, 232, 240, 0.8);
     transition: var(--transition-normal);
@@ -153,7 +153,7 @@ body {
 .form-card select {
     flex: 1;
     min-width: 180px;
-    padding: 12px 16px;
+    padding: 9px 14px;
     font-size: 14px;
     font-family: inherit;
     border: 1px solid #cbd5e1;
@@ -174,17 +174,17 @@ body {
 /* Items layout inside orders */
 .items-wrapper {
     width: 100%;
-    margin-top: 12px;
+    margin-top: 8px;
     display: flex;
     flex-direction: column;
-    gap: 16px;
-    padding: 16px 0;
+    gap: 10px;
+    padding: 10px 0;
     border-top: 1px dashed #e2e8f0;
 }
 
 .order-item-row {
     display: flex;
-    gap: 16px;
+    gap: 12px;
     width: 100%;
     align-items: center;
 }
@@ -201,8 +201,8 @@ body {
 .order-actions {
     width: 100%;
     display: flex;
-    gap: 16px;
-    margin-top: 8px;
+    gap: 12px;
+    margin-top: 4px;
 }
 
 /* Modern Buttons with Animations */
@@ -210,7 +210,7 @@ button {
     font-family: inherit;
     font-weight: 600;
     font-size: 14px;
-    padding: 12px 24px;
+    padding: 9px 18px;
     background: var(--color-primary);
     color: white;
     border: none;
@@ -261,12 +261,12 @@ button:active {
     overflow: hidden;
     box-shadow: var(--shadow-md);
     border: 1px solid rgba(226, 232, 240, 0.8);
-    margin-bottom: 40px;
+    margin-bottom: 24px;
 }
 
 .data-table th,
 .data-table td {
-    padding: 16px 24px;
+    padding: 10px 18px;
     text-align: left;
     border-bottom: 1px solid #f1f5f9;
 }
@@ -329,9 +329,9 @@ button:active {
 
 /* Beautiful Status Alerts */
 .alert {
-    padding: 14px 20px;
+    padding: 10px 16px;
     border-radius: var(--border-radius-sm);
-    margin-bottom: 24px;
+    margin-bottom: 16px;
     font-weight: 500;
     font-size: 14px;
     box-shadow: var(--shadow-sm);
@@ -357,7 +357,7 @@ button:active {
 
 /* Loading indicators */
 .loading-text {
-    margin-bottom: 20px;
+    margin-bottom: 12px;
     color: var(--color-text-muted);
     font-weight: 500;
     font-size: 14px;
@@ -383,7 +383,7 @@ button:active {
 
 .error {
     color: var(--color-danger-hover);
-    margin-bottom: 20px;
+    margin-bottom: 12px;
     font-weight: 500;
 }
 
@@ -425,14 +425,14 @@ button:active {
 .dashboard-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 24px;
-    margin-bottom: 32px;
+    gap: 16px;
+    margin-bottom: 20px;
 }
 
 .card {
     background: var(--bg-secondary);
     border-radius: var(--border-radius-md);
-    padding: 24px;
+    padding: 16px;
     box-shadow: var(--shadow-md);
     border: 1px solid rgba(226, 232, 240, 0.8);
     transition: var(--transition-normal);
@@ -446,11 +446,11 @@ button:active {
 .kpi-card {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 14px;
 }
 
 .card-icon {
-    font-size: 40px;
+    font-size: 32px;
     line-height: 1;
 }
 
@@ -459,16 +459,16 @@ button:active {
 }
 
 .card-info h3 {
-    font-size: 14px;
+    font-size: 13px;
     color: var(--color-text-muted);
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.5px;
-    margin-bottom: 6px;
+    margin-bottom: 4px;
 }
 
 .kpi-value {
-    font-size: 28px;
+    font-size: 24px;
     font-weight: 700;
     color: var(--color-text);
 }
@@ -496,9 +496,9 @@ button:active {
 }
 
 .section-card h3 {
-    font-size: 18px;
+    font-size: 16px;
     font-weight: 700;
-    margin-bottom: 20px;
+    margin-bottom: 14px;
     text-align: left;
     color: var(--color-text);
 }
@@ -506,14 +506,14 @@ button:active {
 .category-list {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 8px;
 }
 
 .category-item {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 12px 16px;
+    padding: 10px 14px;
     background: #f8fafc;
     border-radius: var(--border-radius-sm);
     border: 1px solid #e2e8f0;

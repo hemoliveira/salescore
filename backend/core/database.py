@@ -17,7 +17,7 @@ class DatabaseManager:
     _pool: ConnectionPool | None = None
 
     @classmethod
-    def init_pool(cls, pool_size: int = 5) -> None:
+    def init_pool(cls, pool_size: int = 5, min_size: int = 1) -> None:
         """
         Initializes the PostgreSQL connection pool.
         Must be called once at application startup.
@@ -32,11 +32,14 @@ class DatabaseManager:
             settings = get_settings()
             cls._pool = ConnectionPool(
                 conninfo=settings.database_url.get_secret_value(),
-                min_size=2,
+                min_size=min_size,
                 max_size=pool_size,
-                open=True,
+                # Opened lazily (in the background) instead of blocking startup
+                # on `min_size` synchronous connections - shortens cold start.
+                open=False,
                 kwargs={"row_factory": dict_row, "connect_timeout": 10}
             )
+            cls._pool.open(wait=False)
             logger.info("PostgreSQL connection pool initialized.")
         except Exception as e:
             logger.exception("Failed to initialize PostgreSQL pool")
