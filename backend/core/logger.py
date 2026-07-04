@@ -17,9 +17,11 @@ class Logger:
     def get_logger(cls, name: str = "APP", level: int = logging.INFO) -> logging.Logger:
         """
         Configure and return a logger instance.
-        """
-        cls.LOG_DIR.mkdir(parents=True, exist_ok=True)
 
+        Falls back to console-only logging when the filesystem is read-only
+        (e.g. Vercel serverless functions), where log output is still
+        captured via stdout/stderr.
+        """
         logger = logging.getLogger(name)
 
         if logger.handlers:
@@ -36,24 +38,28 @@ class Logger:
             datefmt=cls.DATE_FORMAT,
         )
 
-        file_handler = TimedRotatingFileHandler(
-            filename=cls.LOG_FILE,
-            when="midnight",
-            interval=1,
-            backupCount=cls.BACKUP_COUNT,
-            encoding="utf-8",
-            delay=True,
-        )
-
-        file_handler.suffix = "%Y-%m-%d"
-        file_handler.setLevel(level)
-        file_handler.setFormatter(formatter)
-
         console_handler = logging.StreamHandler()
         console_handler.setLevel(level)
         console_handler.setFormatter(formatter)
-
-        logger.addHandler(file_handler)
         logger.addHandler(console_handler)
+
+        try:
+            cls.LOG_DIR.mkdir(parents=True, exist_ok=True)
+
+            file_handler = TimedRotatingFileHandler(
+                filename=cls.LOG_FILE,
+                when="midnight",
+                interval=1,
+                backupCount=cls.BACKUP_COUNT,
+                encoding="utf-8",
+                delay=True,
+            )
+
+            file_handler.suffix = "%Y-%m-%d"
+            file_handler.setLevel(level)
+            file_handler.setFormatter(formatter)
+            logger.addHandler(file_handler)
+        except OSError:
+            pass
 
         return logger
