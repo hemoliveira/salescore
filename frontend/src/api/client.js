@@ -1,7 +1,15 @@
-const API_BASE_URL = "http://127.0.0.1:8000";
+// In dev, Vite serves the frontend on :5173 and the API runs locally on :8000.
+// In production, the API is deployed as a Vercel Function behind the /api
+// rewrite on the same origin, so no absolute host is needed.
+const API_BASE_URL =
+    import.meta.env.VITE_API_BASE_URL ?? (import.meta.env.DEV ? "http://127.0.0.1:8000" : "");
+
+function apiUrl(path) {
+    return `${API_BASE_URL}/api${path}`;
+}
 
 export async function apiGet(path) {
-    const response = await fetch(`${API_BASE_URL}${path}`);
+    const response = await fetch(apiUrl(path));
     if (!response.ok) {
         const error = await response.json().catch(() => ({}));
         throw new Error(error.detail || `GET ${path} failed`);
@@ -10,7 +18,7 @@ export async function apiGet(path) {
 }
 
 export async function apiPost(path, body) {
-    const response = await fetch(`${API_BASE_URL}${path}`, {
+    const response = await fetch(apiUrl(path), {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
@@ -27,7 +35,7 @@ export async function apiPost(path, body) {
 }
 
 export async function apiDelete(path) {
-    const response = await fetch(`${API_BASE_URL}${path}`, {
+    const response = await fetch(apiUrl(path), {
         method: "DELETE",
     });
 
@@ -40,7 +48,7 @@ export async function apiDelete(path) {
 }
 
 export async function apiPut(path, body) {
-    const response = await fetch(`${API_BASE_URL}${path}`, {
+    const response = await fetch(apiUrl(path), {
         method: "PUT",
         headers: {
             "Content-Type": "application/json",

@@ -6,7 +6,7 @@ def test_create_get_update_delete_customer(client):
 
     # CREATE
     response = client.post(
-        "/customers",
+        "/api/customers",
         json={
             "name": unique_name,
             "city": "Florianópolis",
@@ -21,7 +21,7 @@ def test_create_get_update_delete_customer(client):
     assert customer_id > 0
 
     # GET BY ID
-    response = client.get(f"/customers/{customer_id}")
+    response = client.get(f"/api/customers/{customer_id}")
     assert response.status_code == 200
 
     data = response.json()
@@ -33,7 +33,7 @@ def test_create_get_update_delete_customer(client):
     updated_name = unique_text("Cliente API Atualizado")
 
     response = client.put(
-        f"/customers/{customer_id}",
+        f"/api/customers/{customer_id}",
         json={
             "name": updated_name,
             "city": "São Paulo",
@@ -44,19 +44,19 @@ def test_create_get_update_delete_customer(client):
     assert response.json()["message"] == "Customer updated successfully"
 
     # DELETE
-    response = client.delete(f"/customers/{customer_id}")
+    response = client.delete(f"/api/customers/{customer_id}")
     assert response.status_code == 200
     assert response.json()["message"] == "Customer deleted successfully"
 
     # GET AFTER DELETE
-    response = client.get(f"/customers/{customer_id}")
+    response = client.get(f"/api/customers/{customer_id}")
     assert response.status_code == 404
     assert response.json()["detail"] == "Customer not found"
 
 
 def test_create_customer_invalid_payload(client):
     response = client.post(
-        "/customers",
+        "/api/customers",
         json={
             "name": "",
             "city": "SC",
@@ -69,7 +69,7 @@ def test_create_customer_invalid_payload(client):
 def test_get_created_customer(client, created_customer):
     customer_id = created_customer["customer_id"]
 
-    response = client.get(f"/customers/{customer_id}")
+    response = client.get(f"/api/customers/{customer_id}")
 
     assert response.status_code == 200
     data = response.json()

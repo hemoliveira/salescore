@@ -54,11 +54,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-app.include_router(health_router)
-app.include_router(customers_router)
-app.include_router(products_router)
-app.include_router(orders_router)
-app.include_router(dashboard_router)
+app.include_router(health_router, prefix="/api")
+app.include_router(customers_router, prefix="/api")
+app.include_router(products_router, prefix="/api")
+app.include_router(orders_router, prefix="/api")
+app.include_router(dashboard_router, prefix="/api")
 
 
 if __name__ == "__main__":

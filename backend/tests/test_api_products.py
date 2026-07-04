@@ -6,7 +6,7 @@ def test_create_get_update_delete_product(client):
 
     # CREATE
     response = client.post(
-        "/products",
+        "/api/products",
         json={
             "name": unique_name,
             "category": "Electronics",
@@ -21,7 +21,7 @@ def test_create_get_update_delete_product(client):
     assert product_id > 0
 
     # GET BY ID
-    response = client.get(f"/products/{product_id}")
+    response = client.get(f"/api/products/{product_id}")
     assert response.status_code == 200
 
     data = response.json()
@@ -34,7 +34,7 @@ def test_create_get_update_delete_product(client):
     updated_name = unique_text("Produto API Atualizado")
 
     response = client.put(
-        f"/products/{product_id}",
+        f"/api/products/{product_id}",
         json={
             "name": updated_name,
             "category": "Updated Category",
@@ -46,19 +46,19 @@ def test_create_get_update_delete_product(client):
     assert response.json()["message"] == "Product updated successfully"
 
     # DELETE
-    response = client.delete(f"/products/{product_id}")
+    response = client.delete(f"/api/products/{product_id}")
     assert response.status_code == 200
     assert response.json()["message"] == "Product deleted successfully"
 
     # GET AFTER DELETE
-    response = client.get(f"/products/{product_id}")
+    response = client.get(f"/api/products/{product_id}")
     assert response.status_code == 404
     assert response.json()["detail"] == "Product not found"
 
 
 def test_create_product_invalid_price(client):
     response = client.post(
-        "/products",
+        "/api/products",
         json={
             "name": unique_text("Produto Inválido"),
             "category": "Test",
@@ -72,7 +72,7 @@ def test_create_product_invalid_price(client):
 def test_get_created_product(client, created_product):
     product_id = created_product["product_id"]
 
-    response = client.get(f"/products/{product_id}")
+    response = client.get(f"/api/products/{product_id}")
 
     assert response.status_code == 200
     data = response.json()

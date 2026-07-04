@@ -15,7 +15,7 @@ def client():
 @pytest.fixture
 def created_customer(client):
     response = client.post(
-        "/customers",
+        "/api/customers",
         json={
             "name": unique_text("Cliente Fixture"),
             "city": "Florianópolis",
@@ -29,7 +29,7 @@ def created_customer(client):
 @pytest.fixture
 def created_product(client):
     response = client.post(
-        "/products",
+        "/api/products",
         json={
             "name": unique_text("Produto Fixture"),
             "category": "Category Fixture",
@@ -44,7 +44,7 @@ def created_product(client):
 @pytest.fixture
 def created_order(client, created_customer):
     product1_response = client.post(
-        "/products",
+        "/api/products",
         json={
             "name": unique_text("Produto Order Fixture 1"),
             "category": "Category A",
@@ -55,7 +55,7 @@ def created_order(client, created_customer):
     product1_id = product1_response.json()["product_id"]
 
     product2_response = client.post(
-        "/products",
+        "/api/products",
         json={
             "name": unique_text("Produto Order Fixture 2"),
             "category": "Category B",
@@ -66,7 +66,7 @@ def created_order(client, created_customer):
     product2_id = product2_response.json()["product_id"]
 
     response = client.post(
-        "/orders",
+        "/api/orders",
         json={
             "customer_id": created_customer["customer_id"],
             "order_date": "2026-04-20",
