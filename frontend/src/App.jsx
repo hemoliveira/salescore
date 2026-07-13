@@ -1,4 +1,5 @@
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+import { Analytics } from "@vercel/analytics/react";
 import Navbar from "./components/Navbar";
 import Dashboard from "./pages/Dashboard";
 import Customers from "./pages/Customers";
@@ -19,6 +20,7 @@ export default function App() {
           <Route path="/orders" element={<Orders />} />
         </Routes>
       </main>
+      <Analytics />
     </BrowserRouter>
   );
 }
